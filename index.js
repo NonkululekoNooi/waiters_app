@@ -5,6 +5,7 @@ const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 const myWaiterRoutes = require("./routes/waiter");
 const myWaiter = require("./waiterFact");
+const ShortUniqueId = require("short-unique-id");
 
 const pgp = require("pg-promise")();
 const app = express();
@@ -30,6 +31,7 @@ const db = pgp(config);
 
 const waiters = myWaiter(db);
 
+const uid = new ShortUniqueId({length: 7});
 // const reged = myRegRoutes(regNo)
 
 app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
@@ -50,31 +52,100 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", async function(req, res){
-  var message = await waiters.waitersName();
-        res.render("index", {
-         message
-        });
+   res.render("index");
 })
 
-app.post("/owner", function(req, res){
-  let ownerInput = req.body.OwnersName
-
-  if(!ownerInput){
-    req.flash("error", "Please type in your name");
+//registering
+app.post("/register", async function(req, res){
+  let usernames = req.body.OwnersName
+  
+  if(await waiters.waitersName(usernames) !== null){
+    
+    req.flash("error",'YOUR NAME IS ALREADY HAVE A CODE')
   }
-
-  res.render("owner")
+  else if(usernames){
+    const code = uid();
+    await waiters.storedWaiterNames(usernames,code)
+    req.flash("success","PLEASE SAVE YOUR CODE" + " " + " : " + " "+code)
+    
+  }
+  
+  res.redirect("registered")
 })
 
-app.post("/waiter", function(req, res){
-
+//login page for waiters
+app.post("/login", async function(req, res){
+  let username = req.body.uname
+  
+  if(username){
+    await waiters.storedWaiterNames(username)
+  }
+  await waiters.waitersName(username)
   res.render("waiter")
 })
 
-app.get("/days", function(req, res){
-  res.render("days")
-
+app.get("/waiter", async function(req, res){
+  res.render("waiter")
 })
+
+//login page for owner
+app.post("/registering", async function(req, res){
+  res.redirect("registered")
+})
+
+app.get("/registered", async function(req, res){
+
+  res.render("registered", {
+
+  })
+})
+
+//waiters choose the days
+app.post("/waiters",async function(req, res){
+  let waitersInput = req.body.uname
+  let weekly = req.body.accept
+  
+  await waiters.storedWaiterNames(waitersInput) 
+  console.log(weekly)
+  var inputs= await waiters.dataBaseName(waitersInput)
+  
+  res.render("days",{
+    output:inputs.named
+  })
+  
+})
+
+
+
+app.get("/waiters",async function(req, res){
+  let names = req.params.uname
+ 
+console.log(names)
+
+  res.render("days",{
+  
+   
+  })
+})
+
+
+
+//
+
+app.post("/waiters/:username",async function(req, res){
+
+
+  res.redirect("/waiters")
+})
+
+app.post("/next",function(req, res){
+
+  res.render('calender')
+})
+
+
+
+
 
 
 

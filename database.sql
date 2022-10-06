@@ -5,7 +5,9 @@ create table week_days(
 
 create table names(
     id serial primary key,
-    named VARCHAR(15) NOT NULL   
+    named VARCHAR(15) NOT NULL,
+    Code text not null   
+
 );
 
 create table waiter_days(

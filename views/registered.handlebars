@@ -17,7 +17,7 @@
 
     <h2>Login Form</h2>
 
-<form action="/owner" method="post">
+<form action="/register" method="post">
   <div class="imgcontainer">
     <img src="css/picOwner.jpg" alt="Avatar" class="avatar">
   </div>
@@ -25,11 +25,13 @@
   <div class="container">
     <label for="uname"><b>Username</b></label>
     <input type="text" placeholder="Enter Username" name="OwnersName" required>
+     <h3 for="user" class="user">PRESS SUBMIT TO GET YOUR CODE</b></h3>
+ <input type="submit">   
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
-        
-    <button type="submit">Login</button>
+   
+        <h4 class="error"> {{messages.error}}</h4>
+  <h3 class="success"> {{messages.success}}</h3>
+
     
 
   

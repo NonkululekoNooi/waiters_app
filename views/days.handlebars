@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/waiter.css">
+
     <title>Document</title>
 </head>
 <body>
 
-                <form action="/waiters/:username" method="post">
-            <h2>WELCOME {{named}}</h2>
+                 {{!-- {{#each output}} --}}
+
+                 <h2>WELCOME 🧑‍🍳 {{output}} </h2>
+
+                 {{!-- {{/each}} --}}
+                <form action="/waiters/{{output}}" method="post">
+
+        
+
                 <h2>PLEASE CHOOSE THE DAYS</h2>
                 <label class="first">
                 <input type="checkbox" class="box" name="accept" value="Sunday">Sunday
@@ -18,30 +25,30 @@
                    
 
                     <div class="second">
-                    <label for="second">
+                    <label for="">
                     <input type="checkbox" class="box" name="accept" value="Monday">Monday
                     </label>
                      </div>
 
 
                     <div class="third">
-                <label class="third">
+                <label for="">
                    <input type="checkbox" class="box" name="accept" value="Tuesday">Tuesday
                 </label>
                 </div>
 
                  <div class="fourth">
-                 <label class="fourth">
+                 <label for="">
                     <input type="checkbox" class="box" name="accept" value="Sunday">Wednesday
                 </label>
                 </div>
 
-                 <label class="fifth">
+                 <label for="">
                     <input type="checkbox" class="box" name="accept" value="Thursday">Thursday
                 </label>
 
                     <div class="fourth">
-                 <label class="Sixth">
+                 <label for="">
                     <input type="checkbox" class="box" name="accept" value="Friday">Friday
                 </label>
                 </div>
@@ -54,6 +61,10 @@
             <button> ADD</button>
             <button>DELETE</button>
              </div>
+    </form>
+
+    <form action="next" method="post">
+        <button> NEXT PAGE</button>
     </form>
 </body>
 </html>
