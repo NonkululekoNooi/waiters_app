@@ -8,11 +8,15 @@
 
     <h2>Login Form</h2>
 
-<form action="/waiters" method="post">
+<form action="/login" method="post">
   <div class="imgcontainer">
     <img src="/css/waiter.jpg" alt="Avatar" class="avatar">
   </div>
 
+
+ <h4 class="error"> {{messages.error}}</h4>
+  <h3 class="success"> {{messages.success}}</h3>
+  
   <div class="container">
     <label for="uname"><b>Username</b></label>
     <input type="text" placeholder="Enter Username" name="uname" required>
@@ -26,7 +30,8 @@
       Login   
     </button>
  
-            
+ 
+
    
 
   </div>

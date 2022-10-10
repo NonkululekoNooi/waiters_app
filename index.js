@@ -58,7 +58,6 @@ app.get("/", async function(req, res){
 //registering
 app.post("/register", async function(req, res){
   let usernames = req.body.OwnersName
-  
   if(await waiters.waitersName(usernames) !== null){
     
     req.flash("error",'YOUR NAME IS ALREADY HAVE A CODE')
@@ -69,85 +68,83 @@ app.post("/register", async function(req, res){
     req.flash("success","PLEASE SAVE YOUR CODE" + " " + " : " + " "+code)
     
   }
-  
   res.redirect("registered")
 })
 
 //login page for waiters
 app.post("/login", async function(req, res){
   let username = req.body.uname
-  
-  if(username){
-    await waiters.storedWaiterNames(username)
+
+  let check = await waiters.waitersName(username)
+
+  if(check){
+    res.redirect("/waiters/"+username)
+  } else {
+    req.flash('error', 'Invalid user name')
+    res.redirect("/waiter")
   }
-  await waiters.waitersName(username)
-  res.render("waiter")
+
 })
 
+// show login form
 app.get("/waiter", async function(req, res){
   res.render("waiter")
 })
 
-//login page for owner
-app.post("/registering", async function(req, res){
-  res.redirect("registered")
-})
-
+// show register form
 app.get("/registered", async function(req, res){
-
-  res.render("registered", {
-
-  })
+  res.render("registered")
 })
 
 //waiters choose the days
-app.post("/waiters",async function(req, res){
-  let waitersInput = req.body.uname
-  let weekly = req.body.accept
+app.get("/waiters/:username",async function(req, res){
+  let waitersInput = req.params.username;
   
-  await waiters.storedWaiterNames(waitersInput) 
-  console.log(weekly)
-  var inputs= await waiters.dataBaseName(waitersInput)
-  
-  res.render("days",{
-    output:inputs.named
+  res.render("days",{ 
+    output:waitersInput
   })
-  
 })
 
 
-
-app.get("/waiters",async function(req, res){
-  let names = req.params.uname
+app.post("/waiters/:uname",async function(req, res){
+  let waitersInput = req.params.uname
  
-console.log(names)
-
-  res.render("days",{
+  let weekly = req.body.accept;
   
-   
+  if(!weekly){
+    req.flash('error','PLEASE CHOOSE YOUR WORKING DAYS')
+  }
+  await waiters.storedWeekdays(weekly, waitersInput);
+  
+  res.redirect("/waiters/"+waitersInput)
+  
+})
+
+
+
+//getting the days that has been added
+
+app.get("/monthly",async function(req, res){
+  let weeks = req.body.accept;  
+
+  let Sunday = await waiters.joiningTables('Sunday')
+ let Monday = await waiters.joiningTables('Monday')
+ let Tuesday = await waiters.joiningTables('Tuesday')
+ let Wednesday = await waiters.joiningTables('Wednesday')
+ let Thursday = await waiters.joiningTables('Thursday')
+ let Friday = await waiters.joiningTables('Friday')
+ let Saturday = await waiters.joiningTables('Friday')
+  res.render('calender',{
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday
   })
+
 })
-
-
-
-//
-
-app.post("/waiters/:username",async function(req, res){
-
-
-  res.redirect("/waiters")
-})
-
-app.post("/next",function(req, res){
-
-  res.render('calender')
-})
-
-
-
-
-
-
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, function () {
