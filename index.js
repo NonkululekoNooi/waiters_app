@@ -111,10 +111,15 @@ app.post("/waiters/:uname",async function(req, res){
  
   let weekly = req.body.accept;
   
-  if(!weekly){
-    req.flash('error','PLEASE CHOOSE YOUR WORKING DAYS')
+ if(!weekly){
+  req.flash('error','PLEASE CHOOSE YOUR DAYS')
+ }
+
+  else if(weekly && waitersInput){
+
+    await waiters.storedWeekdays(weekly, waitersInput);
+    req.flash('success','YOUR DAYS HAS BEEN ADDED')
   }
-  await waiters.storedWeekdays(weekly, waitersInput);
   
   res.redirect("/waiters/"+waitersInput)
   
