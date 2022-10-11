@@ -84,7 +84,7 @@ app.post("/login", async function(req, res){
     res.redirect("/waiters/"+username)
   }
    else {
-    req.flash('error', 'PLEASE REGISTER YOUR NAME')
+    req.flash('error', 'INVALID USERNAME')
     res.redirect("/waiter")
   }
 
@@ -114,6 +114,11 @@ app.post("/waiters/:uname",async function(req, res){
   let waitersInput = req.params.uname
  
   let weekly = req.body.accept;
+
+  if(weekly ){
+   let output = await waiters.checkDays(weekly)
+    console.log(output)
+  }
   
  if(!weekly){
   req.flash('error','PLEASE CHOOSE YOUR DAYS')

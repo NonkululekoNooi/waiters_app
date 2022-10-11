@@ -54,6 +54,24 @@ module.exports = function waiters(db) {
     return joined
   }
 
+async function checkDays(day){
+  totalDays =0;
+  
+  for(var i=0;i<day.length;i++){
+    if(day[i]){
+      totalDays = totalDays +1
+    }
+  }
+  if(totalDays > 3){
+    console.log(totalDays)
+
+    return "PLEASE SELECT ONLY THREE DAYS"
+  }
+  else if(totalDays < 3){
+    return "PLEASE SELECT 3 DAYS"
+  }
+}
+
   async function reseted() {
     return await db.none("TRUNCATE waiter_days");
   }
@@ -66,7 +84,8 @@ module.exports = function waiters(db) {
     dataBaseName,
     storedWeekdays,
     joiningTables,
-    reseted
+    reseted,
+    checkDays
     
   
    
