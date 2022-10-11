@@ -14,31 +14,32 @@ input[type=text], input[type=password] {
 }
 .link{
  
-  background-color: #04AA6D;
+
   color: white;
   padding: 14px 30px;
-  margin: 10px 10px;
+  padding-left: 5px;
+  margin: 20px 0px 10px 50px;
   cursor: pointer;
-  width: 100%;
+  width: 90%;
 
 }
 .links{
-  margin-top:10px;
-  background-color: #04AA6D;
+
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
+  padding: 14px 30px;
+  padding-left: 5px;
+  margin: 20px 0px 10px 50px;
   cursor: pointer;
-  width: 100%;
+  width: 90%;
 }
 .linked{
-  margin-top:10px;
-  background-color: #04AA6D;
+  margin-top: 10px;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
+  padding: 14px 30px;
+  padding-left: 5px;
+  margin: 20px 0px 10px 50px;
   cursor: pointer;
-  width: 100%;
+  width: 90%;
 }
 button {
   background-color: #04AA6D;

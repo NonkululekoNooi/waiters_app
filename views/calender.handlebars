@@ -10,6 +10,10 @@
 </head>
 <body>
 
+       <a href="/waiter" class="linked"><button>LOGOUT</button></a> 
+      
+         <a href="/resets" class="linked"><button>DELETE</button></a> 
+ 
 
     <form action="/monthly" method="post">
     <div class="month">
@@ -33,37 +37,54 @@
 <ul class="days">
   <li>
     {{#each Sunday}}
+      <br>
     {{named}}
+    <br>
+  
     {{/each}}
   </li> 
   <li>  {{#each Monday}}
+     <br>
     {{named}}
+    <br>
     {{/each}}</li>
   <li>
     {{#each Tuesday}}
+     <br>
     {{named}}
+     <br>
     {{/each}}
   </li>
   <li> {{#each Wednesday}}
+     <br>
     {{named}}
+     <br>
     {{/each}}</li>
 <li> 
 {{#each Thursday}}
+ <br>
     {{named}}
+     <br>
     {{/each}}
   </li>
   <li> 
 {{#each Friday}}
+ <br>
     {{named}}
+     <br>
     {{/each}}
   </li>
   <li> 
 {{#each Saturday}}
+ <br>
     {{named}}
+     <br>
     {{/each}}
   </li>
   
 </ul>
+
+   <h4 class="error"> {{messages.error}}</h4>
 </form>
 
     

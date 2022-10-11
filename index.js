@@ -32,7 +32,7 @@ const db = pgp(config);
 const waiters = myWaiter(db);
 
 const uid = new ShortUniqueId({length: 7});
-// const reged = myRegRoutes(regNo)
+
 
 app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
@@ -74,13 +74,17 @@ app.post("/register", async function(req, res){
 //login page for waiters
 app.post("/login", async function(req, res){
   let username = req.body.uname
+  const code = uid();
+  
 
   let check = await waiters.waitersName(username)
 
+ 
   if(check){
     res.redirect("/waiters/"+username)
-  } else {
-    req.flash('error', 'Invalid user name')
+  }
+   else {
+    req.flash('error', 'PLEASE REGISTER YOUR NAME')
     res.redirect("/waiter")
   }
 
@@ -113,19 +117,14 @@ app.post("/waiters/:uname",async function(req, res){
   
  if(!weekly){
   req.flash('error','PLEASE CHOOSE YOUR DAYS')
- }
-
-  else if(weekly && waitersInput){
+ } else if(weekly && waitersInput){
 
     await waiters.storedWeekdays(weekly, waitersInput);
     req.flash('success','YOUR DAYS HAS BEEN ADDED')
   }
-  
   res.redirect("/waiters/"+waitersInput)
   
 })
-
-
 
 //getting the days that has been added
 
@@ -150,6 +149,15 @@ app.get("/monthly",async function(req, res){
   })
 
 })
+
+app.get('/resets',async function (req, res) {
+
+  await waiters.reseted();      
+  req.flash("error","YOU RESETED EVERYTHING");
+  res.render("calender");
+
+})
+
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, function () {

@@ -54,13 +54,19 @@ module.exports = function waiters(db) {
     return joined
   }
 
+  async function reseted() {
+    return await db.none("TRUNCATE waiter_days");
+  }
+
+  
 
   return {
     waitersName,
     storedWaiterNames,
     dataBaseName,
     storedWeekdays,
-    joiningTables
+    joiningTables,
+    reseted
     
   
    
