@@ -81,12 +81,7 @@ async function checkDays(waiter){
     current.push(userCheck.includes(weekdays[i]))
   }
 
-  if(current.length == true && current.length > 3){
-
-    return "PLEASE SELECT 3 DAYS ONLY"
-  }else if (current.length == true && current.length < 3){
-    return current
-  }
+  return current
 }
 
 async function dataBaseName(loggedName) {
