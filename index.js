@@ -72,7 +72,7 @@ app.post("/register", async function(req, res){
   }else if(letters.test(usernames) == true) {
     const code = uid();
     await waiters.storedWaiterNames(usernames,code)
-    req.flash("success","PLEASE SAVE YOUR CODE" + " " + " : " + " "+code)
+    req.flash("output","PLEASE SAVE YOUR CODE" + " " + " : " + " "+code)
     
   }
  
