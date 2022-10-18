@@ -1,7 +1,6 @@
 
-                 <a href="/monthly" class="linked"><button>VIEW YOUR SCHEDULE</button></a>  
 
-                      <a href="/" class="linked"><button>LOGOUT</button></a> 
+                      <a href="/logout" class="linked"><button>LOGOUT</button></a> 
    
 
 
@@ -15,45 +14,48 @@
                 <h2>PLEASE CHOOSE THE DAYS</h2>
                 <div class="first">
                     <label for="days_of_week">
-                <input type="checkbox" class="box" name="accept" value="Sunday">
+                <input type="checkbox" class="box" name="accept" value="Sunday" {{#if checked.[0]}}checked{{/if}}>
                 Sunday
                 </label>
+
+
+
                   </div> 
                    
                     <div class="second">
                     <label for="">
-                    <input type="checkbox" class="box" name="accept" value="Monday">Monday
+                    <input type="checkbox" class="box" name="accept" value="Monday" {{#if checked.[1]}}checked{{/if}}>Monday
                     </label>
                      </div>
 
 
                     <div class="third">
                 <label for="">
-                   <input type="checkbox" class="box" name="accept" value="Tuesday">Tuesday
+                   <input type="checkbox" class="box" name="accept" value="Tuesday" {{#if checked.[2]}}checked{{/if}}>Tuesday
                 </label>
                 </div>
 
                  <div class="fourth">
                  <label for="">
-                    <input type="checkbox" class="box" name="accept" value="Wednesday">Wednesday
+                    <input type="checkbox" class="box" name="accept" value="Wednesday" {{#if checked.[3]}}checked{{/if}}>Wednesday
                 </label>
                 </div>
 
                    <div class="fourth" >
                  <label for="">
-                    <input type="checkbox" class="box" name="accept" value="Thursday">Thursday
+                    <input type="checkbox" class="box" name="accept" value="Thursday" {{#if checked.[4]}}checked{{/if}}>Thursday
                 </label>
                 </div>
 
                     <div class="fourth">
                  <label for="">
-                    <input type="checkbox" class="box" name="accept" value="Friday">Friday
+                    <input type="checkbox" class="box" name="accept" value="Friday" {{#if checked.[5]}}checked{{/if}}>Friday
                 </label>
                 </div>
 
                      <div class="fourth">
                  <label class="Seventh">
-                    <input type="checkbox" class="box" name="accept" value="Saturday">Saturday</span>
+                    <input type="checkbox" class="box" name="accept" value="Saturday" {{#if checked.[6]}}checked{{/if}}>Saturday</span>
                 </label>
                 </div>
               
@@ -64,7 +66,20 @@
             <div class="button">
             <button> ADD</button>
     
-             <script src="./setTimer.js"></script>
+             {{!-- <script src="./setTimer.js"></script> --}}
+  <script>
+      $('.box').click(function(event) {
+     if(this.checked) {
+     $('.box').each(function() {
+      this.checked = true;
+    
+    });
+    } else {
+    $('.box').each(function() {
+      this.checked = false;
+  
+    });
+   }
+ });
+</script>
     </form>
-
-   

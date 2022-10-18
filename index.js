@@ -52,42 +52,59 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", async function(req, res){
-   res.render("index");
+   res.render("index",{
+    passCode: req.session.passCode
+   });
 })
 
 //registering
 app.post("/register", async function(req, res){
-  let usernames = req.body.OwnersName
-  if(await waiters.waitersName(usernames) !== null){
-    
-    req.flash("error",'YOUR NAME IS ALREADY HAVE A CODE')
+  let usernames = req.body.OwnersName.charAt(0).toUpperCase() + req.body.OwnersName.slice(1).toLowerCase();
+  let letters = /^[a-z A-Z]+$/;
+  let results = await waiters.waitersName(usernames) !== null
+  // console.log(results);
+
+  if(results){
+    req.flash("error",`${usernames}, YOUR NAME IS ALREADY HAVE A CODE `)
   }
-  else if(usernames){
+  else if(letters.test(usernames) == false ) {
+    req.flash('error', `PLEASE USE ALPHABETS ONLY`)
+  }else if(letters.test(usernames) == true) {
     const code = uid();
     await waiters.storedWaiterNames(usernames,code)
     req.flash("success","PLEASE SAVE YOUR CODE" + " " + " : " + " "+code)
     
   }
+ 
+
   res.redirect("registered")
 })
 
 //login page for waiters
 app.post("/login", async function(req, res){
-  let username = req.body.uname
-  const code = uid();
-  
+  let username = req.body.uname.charAt(0).toUpperCase() + req.body.uname.slice(1).toLowerCase();
+  const coded = req.body.psw
 
   let check = await waiters.waitersName(username)
-
- 
-  if(check){
+  let passCode = await waiters.WaitersCode(coded)
+  // console.log(passCode)
+  
+if(check,passCode) {
+  req.session.passCode =passCode
     res.redirect("/waiters/"+username)
   }
    else {
-    req.flash('error', 'INVALID USERNAME')
+    req.flash('error', 'PLEASE CHECK YOUR NAME AND YOUR CODE')
     res.redirect("/waiter")
   }
 
+})
+
+//login as the administrator
+app.post("/admin", async function(req, res){
+ 
+    res.redirect("/monthly")
+ 
 })
 
 // show login form
@@ -95,6 +112,10 @@ app.get("/waiter", async function(req, res){
   res.render("waiter")
 })
 
+//show login form for admin
+app.get("/admin", async function(req, res){
+  res.render("admin")
+})
 // show register form
 app.get("/registered", async function(req, res){
   res.render("registered")
@@ -104,8 +125,13 @@ app.get("/registered", async function(req, res){
 app.get("/waiters/:username",async function(req, res){
   let waitersInput = req.params.username;
   
+  let names = await waiters.dataBaseName(waitersInput) 
+  // console.log(names)
+  let checked = await waiters.checkDays(names.id)
+  console.log(checked)
   res.render("days",{ 
-    output:waitersInput
+    output:waitersInput,
+    checked:checked
   })
 })
 
@@ -114,11 +140,9 @@ app.post("/waiters/:uname",async function(req, res){
   let waitersInput = req.params.uname
  
   let weekly = req.body.accept;
-
-  if(weekly ){
-   let output = await waiters.checkDays(weekly)
-    console.log(output)
-  }
+    let names = await waiters.dataBaseName(waitersInput) 
+  // console.log(names)
+ 
   
  if(!weekly){
   req.flash('error','PLEASE CHOOSE YOUR DAYS')
@@ -130,8 +154,13 @@ app.post("/waiters/:uname",async function(req, res){
   res.redirect("/waiters/"+waitersInput)
   
 })
-
 //getting the days that has been added
+
+app.get("/calender", async function(req, res){
+  
+  res.render("calender")
+})
+//showing the days of the waiters to the admin
 
 app.get("/monthly",async function(req, res){
   let weeks = req.body.accept;  
@@ -155,10 +184,17 @@ app.get("/monthly",async function(req, res){
 
 })
 
+// logOut
+app.get("/logout", async function(req, res){
+
+  delete req.session.passCode
+  res.render("index")
+})
+
 app.get('/resets',async function (req, res) {
 
   await waiters.reseted();      
-  req.flash("error","YOU RESETED EVERYTHING");
+  req.flash("error","SCHEDULE HAS BEEN CLEARED");
   res.render("calender");
 
 })

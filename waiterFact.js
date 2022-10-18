@@ -3,42 +3,54 @@ module.exports = function waiters(db) {
   async function waitersName(names) {
     let waiterNames = await db.oneOrNone("SELECT named FROM names where named=$1",
     [names]);
+    
     return waiterNames;
   }
 
+  async function WaitersCode(coding){
+    let waiterCode = await db.oneOrNone("SELECT * FROM names where Code = $1",
+    [coding]);
+    
+    return waiterCode;
+  }
+
   async function storedWaiterNames(naming,codes) {
-    let checkedName = await waitersName(naming);
+   
 
-    if (checkedName == null) {
-      await db.none("INSERT INTO names(named,code) values($1,$2)", 
-      [naming,codes]);
-     
-    }
+      let checkedName = await waitersName(naming);
+
+      if (checkedName == null) {
+        await db.none("INSERT INTO names(named,code) values($1,$2)", 
+        [naming,codes]);
+       
+      }
+    
   }
 
-  async function dataBaseName(loggedName) {
-    var naming = await db.one("SELECT named FROM names WHERE named=$1", [
-      loggedName,
-    ]);
-    return naming;
-  }
+
 
   async function storedWeekdays(weeks, title) {
     
     let daysOfWeeks = Array.isArray(weeks) === false ? [weeks] : weeks
+    const username = title
+    let waiter = await db.one("SELECT id FROM names where named =$1", [
+      username
+    ]);
+
+    
+    await db.none('DELETE FROM waiter_days WHERE waiter_names_id=$1', [waiter.id])
    for(var i = 0; i < daysOfWeeks.length ; i++) {
     const day = daysOfWeeks[i];
-    const username = title
+
+    
 
     let weekday =  await db.one('SELECT id FROM week_days where days_of_week= $1',[
-        day
-      ]);
-      
-      let waiter = await db.one("SELECT id FROM names where named =$1", [
-        username
-      ]);
-   
-     await db.none("INSERT INTO waiter_days(days_id, waiter_names_id) values($1, $2)",
+      day
+    ]);
+    
+    
+    
+    await db.none("INSERT INTO waiter_days(days_id, waiter_names_id) values($1, $2)",
         [weekday.id, waiter.id]
       );
     }
@@ -54,22 +66,28 @@ module.exports = function waiters(db) {
     return joined
   }
 
-async function checkDays(day){
-  totalDays =0;
-  
-  for(var i=0;i<day.length;i++){
-    if(day[i]){
-      totalDays = totalDays +1
-    }
-  }
-  if(totalDays > 3){
-    console.log(totalDays)
+async function checkDays(waiter){
+ let userCheck = await db.manyOrNone(`SELECT week_days.days_of_week FROM waiter_days
+ JOIN week_days ON waiter_days.days_id = week_days.id where waiter_names_id =$1;`, 
+ [waiter])
+  userCheck = userCheck.map(obj => obj.days_of_week )
 
-    return "PLEASE SELECT ONLY THREE DAYS"
+  let weekdays = await db.manyOrNone(`SELECT * FROM week_days`)
+  weekdays = weekdays.map(obj => obj.days_of_week)
+
+  let current =[]
+
+  for(var i= 0; i< weekdays.length;i++){
+    current.push(userCheck.includes(weekdays[i]))
   }
-  else if(totalDays < 3){
-    return "PLEASE SELECT 3 DAYS"
-  }
+  return current
+}
+
+async function dataBaseName(loggedName) {
+  var naming = await db.one("SELECT * FROM names WHERE named=$1", [
+    loggedName,
+  ]);
+  return naming;
 }
 
   async function reseted() {
@@ -85,7 +103,8 @@ async function checkDays(day){
     storedWeekdays,
     joiningTables,
     reseted,
-    checkDays
+    checkDays,
+    WaitersCode,
     
   
    

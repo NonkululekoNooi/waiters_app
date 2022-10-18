@@ -1,5 +1,5 @@
-
 <body>
+    {{!-- login as the administrator --}}
 
  <a href="/">
       <button class="home" type=""> HOME </button>
@@ -8,9 +8,9 @@
 
     <h2>Login Form</h2>
 
-<form action="/login" method="post">
+<form action="/admin" method="post">
   <div class="imgcontainer">
-    <img src="/css/waiter.jpg" alt="Avatar" class="avatar">
+    <img src="/css/me.png" alt="Avatar" class="avatar">
   </div>
 
 
@@ -19,7 +19,6 @@
   
   <div class="container">
     <label for="uname"><b>Username</b></label>
-    {{passCode.Username}}
     <input type="text" placeholder="Enter Username" name="uname">
 
     <label for="psw"><b>Password</b></label>
@@ -37,14 +36,5 @@
   </div>
 
 </form>
-
-
-
-
-
+ 
 </body>
-    <script src="./setTimer.js"></script>
-
-
-
-       
