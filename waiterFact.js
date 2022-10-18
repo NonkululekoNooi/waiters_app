@@ -80,7 +80,13 @@ async function checkDays(waiter){
   for(var i= 0; i< weekdays.length;i++){
     current.push(userCheck.includes(weekdays[i]))
   }
-  return current
+
+  if(current.length == true && current.length > 3){
+
+    return "PLEASE SELECT 3 DAYS ONLY"
+  }else if (current.length == true && current.length < 3){
+    return current
+  }
 }
 
 async function dataBaseName(loggedName) {
@@ -88,6 +94,31 @@ async function dataBaseName(loggedName) {
     loggedName,
   ]);
   return naming;
+}
+
+
+
+async function getColors(){
+
+let weekdays = await db.manyOrNone(`SELECT * FROM week_days`)
+
+for(let day of weekdays) {
+
+  let countingDays = await db.manyOrNone(`SELECT count(*) FROM waiter_days where days_id =$1 `,[day.id])
+  let counting = countingDays[0].count
+
+  if(counting > 3){
+    day.color = "danger"
+  }else if(counting == 3){
+    day.color = "green"
+  }else if(counting <3){
+    day.color ="warning"
+  }
+
+}
+
+return weekdays;
+
 }
 
   async function reseted() {
@@ -105,6 +136,7 @@ async function dataBaseName(loggedName) {
     reseted,
     checkDays,
     WaitersCode,
+    getColors,
     
   
    

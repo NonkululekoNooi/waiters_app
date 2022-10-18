@@ -24,15 +24,19 @@
 </div>
 
 <ul class="weekdays">
-  <li>Sun</li>
+  {{!-- <li class="">Sun</li>
   <li>Mon</li>
   <li>Tues</li>
   <li>Wed</li>
   <li>Thurs</li>
   <li>Fri</li>
-  <li>Sat</li>
+  <li>Sat</li> --}}
   
+{{#each robots}}
+<li class="{{color}}">{{days_of_week}}</li>
+{{/each}}
 </ul>
+
 
 <ul class="days">
   <li>

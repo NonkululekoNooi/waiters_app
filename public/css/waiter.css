@@ -43,7 +43,7 @@ button {
   background-color: #04AA6D;
   color: white;
   padding: 14px 20px;
- 
+ margin: 8px;
   cursor: pointer;
   width: 50%;
 }
@@ -90,10 +90,19 @@ label{
 
 }
 
-.message {
-  color: blue;
-}
 
+.danger{
+  color: red;
+  background-color: red;
+}
+.warning{
+  color: orange;
+  background-color: orange;
+}
+.green {
+  color: green;
+  background-color: green;
+}
 @media screen and (max-width: 300px) {
   span.psw {
      display: block;
@@ -144,7 +153,7 @@ label{
 .weekdays li {
   display: inline-block;
   width: 13.6%;
-  color: #666;
+  color:black;
   text-align: center;
 }
 

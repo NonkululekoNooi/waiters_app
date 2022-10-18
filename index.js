@@ -164,14 +164,17 @@ app.get("/calender", async function(req, res){
 
 app.get("/monthly",async function(req, res){
   let weeks = req.body.accept;  
-
+  
   let Sunday = await waiters.joiningTables('Sunday')
- let Monday = await waiters.joiningTables('Monday')
- let Tuesday = await waiters.joiningTables('Tuesday')
- let Wednesday = await waiters.joiningTables('Wednesday')
- let Thursday = await waiters.joiningTables('Thursday')
- let Friday = await waiters.joiningTables('Friday')
- let Saturday = await waiters.joiningTables('Friday')
+  let Monday = await waiters.joiningTables('Monday')
+  let Tuesday = await waiters.joiningTables('Tuesday')
+  let Wednesday = await waiters.joiningTables('Wednesday')
+  let Thursday = await waiters.joiningTables('Thursday')
+  let Friday = await waiters.joiningTables('Friday')
+  let Saturday = await waiters.joiningTables('Friday')
+  
+  let robots = await waiters.getColors()
+ 
   res.render('calender',{
     Sunday,
     Monday,
@@ -179,7 +182,8 @@ app.get("/monthly",async function(req, res){
     Wednesday,
     Thursday,
     Friday,
-    Saturday
+    Saturday,
+    robots
   })
 
 })
