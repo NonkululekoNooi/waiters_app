@@ -192,13 +192,14 @@ app.get("/monthly",async function(req, res){
 app.get("/logout", async function(req, res){
 
   delete req.session.passCode
-  res.render("index")
+  req.flash("success",'ENJOY YOUR DAY 🙏🙏🙏')
+  res.render("waiter")
 })
 
 app.get('/resets',async function (req, res) {
 
   await waiters.reseted();      
-  req.flash("error","SCHEDULE HAS BEEN CLEARED");
+  req.flash("success","SCHEDULE HAS BEEN CLEARED");
   res.render("calender");
 
 })

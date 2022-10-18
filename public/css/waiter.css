@@ -31,11 +31,20 @@ input[type=text], input[type=password] {
   width: 90%;
 }
 .linked{
-  margin-top: 10px;
+ 
   color: white;
   padding: 14px 30px;
   padding-left: 5px;
-  margin: 0px 0px 10px 30px;
+  margin: 10px 10px 100px 30px;
+  cursor: pointer;
+  width: 90%;
+
+}
+.lins{
+  color: white;
+  padding: 14px 30px;
+  padding-left: 5px;
+  margin: 10px 10px 100px 30px;
   cursor: pointer;
   width: 90%;
 }
@@ -43,11 +52,16 @@ button {
   background-color: #04AA6D;
   color: white;
   padding: 14px 20px;
- margin: 8px;
+
   cursor: pointer;
   width: 50%;
 }
-
+.error{
+  color:red;
+}
+.success{
+  color: black;
+}
 button .owner{
   margin-top: 15px;
 }
@@ -117,9 +131,10 @@ label{
 
 .month {
   padding: 70px 25px;
-  width: 100%;
+  width: 96.3%;
   background: #1abc9c;
   text-align: center;
+  margin-top: 40px;
 }
 
 .month ul {
