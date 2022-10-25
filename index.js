@@ -5,7 +5,7 @@ const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 const myWaiterRoutes = require("./routes/waiter");
 const myWaiter = require("./waiterFact");
-const ShortUniqueId = require("short-unique-id");
+
 
 const pgp = require("pg-promise")();
 const app = express();
@@ -32,7 +32,7 @@ const db = pgp(config);
 const waiters = myWaiter(db);
 const regWaiters = myWaiterRoutes(waiters)
 
-const uid = new ShortUniqueId({length: 7});
+
 
 
 app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
@@ -52,89 +52,24 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get("/", async function(req, res){
-   res.render("index",{
-    passCode: req.session.passCode
-   });
-})
-
+app.get("/", regWaiters.home)
 //registering
-app.post("/register", async function(req, res){
-  let usernames = req.body.OwnersName.charAt(0).toUpperCase() + req.body.OwnersName.slice(1).toLowerCase();
-  let letters = /^[a-z A-Z]+$/;
-  let results = await waiters.waitersName(usernames) !== null
-  // console.log(results);
-
-  if(results){
-    req.flash("error",`${usernames}, YOUR NAME IS ALREADY HAVE A CODE `)
-  }
-  else if(letters.test(usernames) == false ) {
-    req.flash('error', `PLEASE USE ALPHABETS ONLY`)
-  }else   {
-    const code = uid();
-    await waiters.storedWaiterNames(usernames,code)
-    req.flash("output","PLEASE SAVE YOUR CODE" + " " + " : " + " "+code)
-    
-  }
- 
-
-  res.redirect("registered")
-})
-
+app.post("/register", regWaiters.register)
 //login page for waiters
-app.post("/login", async function(req, res){
-  let username = req.body.uname.charAt(0).toUpperCase() + req.body.uname.slice(1).toLowerCase();
-  const coded = req.body.psw
-
-  let check = await waiters.waitersName(username)
-  let passCode = await waiters.WaitersCode(coded)
-  // console.log(passCode)
-  
-if(check,passCode) {
-  req.session.passCode =passCode
-    res.redirect("/waiters/"+username)
-  }
-   else {
-    req.flash('error', 'PLEASE CHECK YOUR NAME AND YOUR CODE')
-    res.redirect("/waiter")
-  }
-
-})
-
+app.post("/login",regWaiters.login)
 //login as the administrator
-app.post("/admin", async function(req, res){
- 
-    res.redirect("/monthly")
- 
-})
+app.post("/admin", regWaiters.admin)
 
 // show login form
-app.get("/waiter", async function(req, res){
-  res.render("waiter")
-})
+app.get("/waiter",regWaiters.showLogin)
 
 //show login form for admin
-app.get("/admin", async function(req, res){
-  res.render("admin")
-})
+app.get("/admin",regWaiters.showAdmin) 
 // show register form
-app.get("/registered", async function(req, res){
-  res.render("registered")
-})
+app.get("/registered", regWaiters.showRegister)
 
 //waiters choose the days
-app.get("/waiters/:username",async function(req, res){
-  let waitersInput = req.params.username;
-  
-  let names = await waiters.dataBaseName(waitersInput) 
-  // console.log(names)
-  let checked = await waiters.checkDays(names.id)
-  console.log(checked)
-  res.render("days",{ 
-    output:waitersInput,
-    checked:checked
-  })
-})
+app.get("/waiters/:username",regWaiters.waitersDay)
 
 
 app.post("/waiters/:uname",async function(req, res){
@@ -157,53 +92,15 @@ app.post("/waiters/:uname",async function(req, res){
 })
 //getting the days that has been added
 
-app.get("/calender", async function(req, res){
-  
-  res.render("calender")
-})
+app.get("/calender",regWaiters.showDays)
 //showing the days of the waiters to the admin
 
-app.get("/monthly",async function(req, res){
-  let weeks = req.body.accept;  
-  
-  let Sunday = await waiters.joiningTables('Sunday')
-  let Monday = await waiters.joiningTables('Monday')
-  let Tuesday = await waiters.joiningTables('Tuesday')
-  let Wednesday = await waiters.joiningTables('Wednesday')
-  let Thursday = await waiters.joiningTables('Thursday')
-  let Friday = await waiters.joiningTables('Friday')
-  let Saturday = await waiters.joiningTables('Friday')
-  
-  let robots = await waiters.getColors()
- 
-  res.render('calender',{
-    Sunday,
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    robots
-  })
-
-})
+app.get("/monthly",regWaiters.monthly)
 
 // logOut
-app.get("/logout", async function(req, res){
+app.get("/logout",regWaiters.logout) 
 
-  delete req.session.passCode
-  req.flash("success",'ENJOY YOUR DAY 🙏🙏🙏')
-  res.render("waiter")
-})
-
-app.get('/resets',async function (req, res) {
-
-  await waiters.reseted();      
-  req.flash("success","SCHEDULE HAS BEEN CLEARED");
-  res.render("calender");
-
-})
+app.get('/resets',regWaiters.resets)
 
 
 const PORT = process.env.PORT || 3002;
