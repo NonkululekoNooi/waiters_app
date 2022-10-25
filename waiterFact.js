@@ -8,11 +8,13 @@ module.exports = function waiters(db) {
   }
 
   async function WaitersCode(coding){
-    let waiterCode = await db.oneOrNone("SELECT * FROM names where Code = $1",
+    let waiterCode = await db.oneOrNone("SELECT code FROM names where Code = $1",
     [coding]);
     
     return waiterCode;
   }
+
+
 
   async function storedWaiterNames(naming,codes) {
    
@@ -28,6 +30,12 @@ module.exports = function waiters(db) {
   }
 
 
+  async function WaitersWeek(weeks){
+    let waiterCode = await db.manyOrNone("SELECT * FROM week_days where days_of_week = $1",
+    [weeks]);
+    
+    return waiterCode;
+  }
 
   async function storedWeekdays(weeks, title) {
     
@@ -67,6 +75,7 @@ module.exports = function waiters(db) {
   }
 
 async function checkDays(waiter){
+  console.log(waiter)
  let userCheck = await db.manyOrNone(`SELECT week_days.days_of_week FROM waiter_days
  JOIN week_days ON waiter_days.days_id = week_days.id where waiter_names_id =$1;`, 
  [waiter])
@@ -132,6 +141,7 @@ return weekdays;
     checkDays,
     WaitersCode,
     getColors,
+    WaitersWeek
     
   
    

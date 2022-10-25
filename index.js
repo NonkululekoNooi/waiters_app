@@ -30,6 +30,7 @@ const config = {
 const db = pgp(config);
 
 const waiters = myWaiter(db);
+const regWaiters = myWaiterRoutes(waiters)
 
 const uid = new ShortUniqueId({length: 7});
 
@@ -69,7 +70,7 @@ app.post("/register", async function(req, res){
   }
   else if(letters.test(usernames) == false ) {
     req.flash('error', `PLEASE USE ALPHABETS ONLY`)
-  }else if(letters.test(usernames) == true) {
+  }else   {
     const code = uid();
     await waiters.storedWaiterNames(usernames,code)
     req.flash("output","PLEASE SAVE YOUR CODE" + " " + " : " + " "+code)

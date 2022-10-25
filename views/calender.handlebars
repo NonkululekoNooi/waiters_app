@@ -24,27 +24,23 @@
 </div>
 
 <ul class="weekdays">
-  {{!-- <li class="">Sun</li>
-  <li>Mon</li>
-  <li>Tues</li>
-  <li>Wed</li>
-  <li>Thurs</li>
-  <li>Fri</li>
-  <li>Sat</li> --}}
   
 {{#each robots}}
-<li class="{{color}}">{{days_of_week}}</li>
+<li class="{{color}}">{{days_of_week}}
+</li>
 {{/each}}
 </ul>
 
 
+ 
 <ul class="days">
   <li>
     {{#each Sunday}}
       <br>
-    {{named}}
+      
+    {{named}}   
+    
     <br>
-  
     {{/each}}
   </li> 
   <li>  {{#each Monday}}
@@ -88,10 +84,15 @@
   </li>
   
 </ul>
-{{!-- <span class="days{{color}}">{{}}</span> --}}
+
    <h4 class="error"> {{messages.error}}</h4>
 </form>
 
-    
+<div style="background-color:#1abc9c; width:40%; margin-left: 25%; height: 150px">
+<h3 style="color:black">KEYS</h3>
+<h4 style="background-color:green ;width:max-content; text-align:center; margin-left: 20%">YOU HAVE ENOUGH WAITERS FOR THE DAY</h4>
+<h4 style="background-color:orange ;width:max-content; text-align:center; margin-left: 19%">YOU HAVE LESS THAN 3 WAITERS FOR THE DAY</h4>
+<h4 style="background-color:red ; width:max-content; text-align:center; margin-left: 18%">YOU HAVE MORE THAN 3 WAITERS FOR THE DAY</h4>
+</div> 
 </body>
 </html>

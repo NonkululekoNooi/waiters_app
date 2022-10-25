@@ -130,11 +130,11 @@ label{
 
 
 .month {
-  padding: 70px 25px;
+  padding: 30px 25px;
   width: 96.3%;
   background: #1abc9c;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 .month ul {
@@ -207,3 +207,4 @@ label{
 @media screen and (max-width: 290px) {
   .weekdays li, .days li {width: 12.2%;}
 }
+
