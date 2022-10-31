@@ -61,12 +61,12 @@ module.exports = function myGreetedRoutes(waiters){
         console.log(check)
         console.log(passCode)
         
-        if(check.named === 'Admin' && passCode.code === 'yyiM1LH'){
+        if(check.named === 'Admin' && passCode.code === '4UpYXn7'){
           res.redirect("/monthly")
         }
-        else if(!check.named === 'Admin' && passCode.code === 'yyiM1LH'){
+        else {
           res.redirect("admin")
-        
+          req.flash('error', 'PLEASE CHECK YOUR NAME AND YOUR CODE')
         
         }
         

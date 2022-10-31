@@ -1,7 +1,7 @@
 {
   "name": "waiter_webapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "[![Node.js CI](https://github.com/NonkululekoNooi/waiters_app/actions/workflows/node.js.yml/badge.svg)](https://github.com/NonkululekoNooi/waiters_app/actions/workflows/node.js.yml)",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
@@ -18,5 +18,16 @@
     "mocha": "^10.0.0",
     "pg-promise": "^10.12.0",
     "short-unique-id": "^4.4.4"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NonkululekoNooi/waiters_app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NonkululekoNooi/waiters_app/issues"
+  },
+  "homepage": "https://github.com/NonkululekoNooi/waiters_app#readme"
 }
