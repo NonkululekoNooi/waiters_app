@@ -14,8 +14,17 @@ module.exports = function myGreetedRoutes(waiters){
         let usernames = req.body.OwnersName.charAt(0).toUpperCase() + req.body.OwnersName.slice(1).toLowerCase();
         let letters = /^[a-z A-Z]+$/;
         let results = await waiters.waitersName(usernames) !== null
-        // console.log(results);
+       
+
+        // need to get role - if admin or not
+        if(await waiters.storedWaiterNames(usernames) === 'Admin'){
+         let output = await waiters.adminName(usernames)
+         console.log(output)
+        }
       
+      
+
+        
         if(results){
           req.flash("error",`${usernames}, YOUR NAME IS ALREADY HAVE A CODE `)
         }
@@ -24,6 +33,8 @@ module.exports = function myGreetedRoutes(waiters){
         }else   {
           const code = uid();
           await waiters.storedWaiterNames(usernames,code)
+          // if admin, we need to add user id into admins table
+          await waiters.adminName(usernames)
           req.flash("output","PLEASE SAVE YOUR CODE" + " " + " : " + " "+code)
           
         }
@@ -55,18 +66,20 @@ module.exports = function myGreetedRoutes(waiters){
         let username = req.body.uname.charAt(0).toUpperCase() + req.body.uname.slice(1).toLowerCase();
         const coded = req.body.psw
       
-        let check = await waiters.waitersName(username)
-        let passCode = await waiters.WaitersCode(coded)
       
-        console.log(check)
-        console.log(passCode)
-        
-        if(check.named === 'Admin' && passCode.code === '4UpYXn7'){
+
+        // new if statement
+        // query or select admin_id from admins table, check user (select from admins where user_id = ?)
+        // if results - redirect to admin page
+
+        let check = await waiters.adminName(coded) // return true if admin else return false if is not admin
+
+        if(check){
           res.redirect("/monthly")
         }
         else {
-          res.redirect("admin")
           req.flash('error', 'PLEASE CHECK YOUR NAME AND YOUR CODE')
+          res.redirect("back")
         
         }
         

@@ -10,6 +10,7 @@ create table names(
 
 );
 
+
 create table waiter_days(
     id serial primary key,
     days_id integer not null,

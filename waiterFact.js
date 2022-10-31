@@ -14,6 +14,12 @@ module.exports = function waiters(db) {
     return waiterCode;
   }
 
+  async function adminName(codes){
+    let admin = await db.oneOrNone("SELECT * FROM names WHERE named = 'Admin' and Code = $1",[codes]);
+    return admin != null
+  }
+  
+
 
 
   async function storedWaiterNames(naming,codes) {
@@ -141,7 +147,8 @@ return weekdays;
     checkDays,
     WaitersCode,
     getColors,
-    WaitersWeek
+    WaitersWeek,
+    adminName
     
   
    
