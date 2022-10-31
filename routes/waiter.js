@@ -38,7 +38,7 @@ module.exports = function myGreetedRoutes(waiters){
       
         let check = await waiters.waitersName(username)
         let passCode = await waiters.WaitersCode(coded)
-        // console.log(passCode)
+      
         
       if(check,passCode) {
         req.session.passCode =passCode
@@ -52,9 +52,24 @@ module.exports = function myGreetedRoutes(waiters){
       }
 
       async function admin(req, res){
- 
-        res.redirect("/monthly")
-     
+        let username = req.body.uname.charAt(0).toUpperCase() + req.body.uname.slice(1).toLowerCase();
+        const coded = req.body.psw
+      
+        let check = await waiters.waitersName(username)
+        let passCode = await waiters.WaitersCode(coded)
+      
+        console.log(check)
+        console.log(passCode)
+        
+        if(check.named === 'Admin' && passCode.code === 'yyiM1LH'){
+          res.redirect("/monthly")
+        }
+        else if(!check.named === 'Admin' && passCode.code === 'yyiM1LH'){
+          res.redirect("admin")
+        
+        
+        }
+        
     }
 
     async function showLogin(req, res){
@@ -73,9 +88,9 @@ module.exports = function myGreetedRoutes(waiters){
         let waitersInput = req.params.username;
         
         let names = await waiters.dataBaseName(waitersInput) 
-        // console.log(names)
+       
         let checked = await waiters.checkDays(names.id)
-        console.log(checked)
+        
         res.render("days",{ 
           output:waitersInput,
           checked:checked
