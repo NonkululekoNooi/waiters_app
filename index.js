@@ -103,7 +103,7 @@ app.get("/logout",regWaiters.logout)
 app.get('/resets',regWaiters.resets)
 
 
-const PORT = process.env.PORT || 3009;
+const PORT = process.env.PORT || 3008;
 app.listen(PORT, function () {
   console.log("APP STARTED AT PORT", PORT);
 });
