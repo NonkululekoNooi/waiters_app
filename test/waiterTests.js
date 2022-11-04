@@ -106,7 +106,7 @@ describe("WAITERS TESTS", async function () {
      
       })
 
-      it("should return red/danger if waiters are more than 3 in one day", async function () {
+      it("should return red/danger if waiters are more than 3 for Fridat", async function () {
         const waiters = myWaiter(db);
         await waiters.storedWaiterNames('Lesedi','3nl0v5F')
         await waiters.storedWaiterNames('Lukhanyo',' qWd4po0')
@@ -131,7 +131,7 @@ describe("WAITERS TESTS", async function () {
       })
 
 
-      it("should return orange/warning if waiters are less than 3 in one day", async function () {
+      it("should return orange/warning if waiters are less than 3 for Saturday", async function () {
         const waiters = myWaiter(db);
         await waiters.storedWaiterNames('Lesedi','3nl0v5F')
         await waiters.storedWaiterNames('Phumza','hqB80bm')
@@ -153,7 +153,7 @@ describe("WAITERS TESTS", async function () {
        
       })
 
-      it("should return green/good if waiters are equal to 3 in one day", async function () {
+      it("should return green/good if waiters are equal to 3 for Monday", async function () {
         const waiters = myWaiter(db);
         await waiters.storedWaiterNames('Lesedi','3nl0v5F')
         await waiters.storedWaiterNames('Lukhanyo',' qWd4po0')
