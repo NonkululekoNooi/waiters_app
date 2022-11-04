@@ -106,7 +106,7 @@ describe("WAITERS TESTS", async function () {
      
       })
 
-      it("should return red/danger if waiters are more than 3 for Fridat", async function () {
+      it("should return red/danger if waiters are more than 3 for Friday", async function () {
         const waiters = myWaiter(db);
         await waiters.storedWaiterNames('Lesedi','3nl0v5F')
         await waiters.storedWaiterNames('Lukhanyo',' qWd4po0')
