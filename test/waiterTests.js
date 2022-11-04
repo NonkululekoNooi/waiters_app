@@ -153,7 +153,7 @@ describe("WAITERS TESTS", async function () {
        
       })
 
-      it("should return green/good if waiters are equal to 3 for Monday", async function () {
+      it("should return green if  there  enough waiters for Monday", async function () {
         const waiters = myWaiter(db);
         await waiters.storedWaiterNames('Lesedi','3nl0v5F')
         await waiters.storedWaiterNames('Lukhanyo',' qWd4po0')
