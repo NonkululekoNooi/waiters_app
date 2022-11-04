@@ -53,51 +53,33 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", regWaiters.home)
-//registering
+
 app.post("/register", regWaiters.register)
-//login page for waiters
+
 app.post("/login",regWaiters.login)
-//login as the administrator
+
 app.post("/admin", regWaiters.admin)
 
-// show login form
+
 app.get("/waiter",regWaiters.showLogin)
 
-//show login form for admin
+
 app.get("/admin",regWaiters.showAdmin) 
-// show register form
+
 app.get("/registered", regWaiters.showRegister)
 
-//waiters choose the days
+
 app.get("/waiters/:username",regWaiters.waitersDay)
 
 
-app.post("/waiters/:uname",async function(req, res){
-  let waitersInput = req.params.uname
- 
-  let weekly = req.body.accept;
-    let names = await waiters.dataBaseName(waitersInput) 
-  // console.log(names)
- 
-  
- if(!weekly){
-  req.flash('error','PLEASE CHOOSE YOUR DAYS')
- } else if(weekly && waitersInput){
+app.post("/waiters/:uname",regWaiters.days)
 
-    await waiters.storedWeekdays(weekly, waitersInput);
-    req.flash('success','YOUR DAYS HAS BEEN ADDED')
-  }
-  res.redirect("/waiters/"+waitersInput)
-  
-})
-//getting the days that has been added
 
 app.get("/calender",regWaiters.showDays)
-//showing the days of the waiters to the admin
+
 
 app.get("/monthly",regWaiters.monthly)
 
-// logOut
 app.get("/logout",regWaiters.logout) 
 
 app.get('/resets',regWaiters.resets)

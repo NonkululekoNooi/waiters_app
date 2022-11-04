@@ -96,6 +96,27 @@ module.exports = function myGreetedRoutes(waiters){
         })
     }
 
+    async function days(req, res){
+      let waitersInput = req.params.uname
+     
+      let weekly = req.body.accept;
+        let names = await waiters.dataBaseName(waitersInput) 
+      
+     
+      
+     if(!weekly){
+      req.flash('error','PLEASE CHOOSE YOUR DAYS')
+     } else if(weekly && waitersInput){
+    
+    
+        await waiters.storedWeekdays(weekly, waitersInput);
+        req.flash('success','YOUR DAYS HAS BEEN ADDED')
+      }
+    
+      res.redirect("/waiters/"+waitersInput)
+      
+    }
+
     async function showDays(req, res){
   
         res.render("calender")
@@ -154,7 +175,8 @@ module.exports = function myGreetedRoutes(waiters){
       resets,
       logout,
       monthly,
-      showDays
+      showDays,
+      days,
     
 
         

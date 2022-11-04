@@ -94,8 +94,10 @@ async function checkDays(waiter){
 
   for(var i= 0; i< weekdays.length;i++){
     current.push(userCheck.includes(weekdays[i]))
+    
   }
-
+  
+ 
   return current
 }
 
